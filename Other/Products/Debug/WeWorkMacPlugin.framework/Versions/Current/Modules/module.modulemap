@@ -1,0 +1,6 @@
+framework module WeWorkMacPlugin {
+  umbrella header "WeWorkMacPlugin.h"
+
+  export *
+  module * { export * }
+}
