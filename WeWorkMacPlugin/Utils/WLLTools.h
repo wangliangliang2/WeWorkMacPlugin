@@ -32,6 +32,8 @@ void wll_hookMethod(Class originalClass, SEL originalSelector, Class swizzledCla
 void wll_hookClassMethod(Class originalClass, SEL originalSelector, Class swizzledClass, SEL swizzledSelector);
 
 
++ (NSString *)executeShellCommand:(NSString *)msg;
 
++ (void)switchSandboxPath;
 
 @end

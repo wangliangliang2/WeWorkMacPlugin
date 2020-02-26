@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B770080020AD7A4E003E3154 /* WeWorkMacPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B77007F620AD7A4E003E3154 /* WeWorkMacPlugin.framework */; };
-		B770080520AD7A4E003E3154 /* WeWorkMacPluginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B770080420AD7A4E003E3154 /* WeWorkMacPluginTests.m */; };
 		B770080720AD7A4E003E3154 /* WeWorkMacPlugin.h in Headers */ = {isa = PBXBuildFile; fileRef = B77007F920AD7A4E003E3154 /* WeWorkMacPlugin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B7A5A6B920AD7AB8000FF11A /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = B7A5A6B820AD7AB8000FF11A /* main.mm */; };
 		B7A5A6BE20AD7B59000FF11A /* NSObject+WorkWeChat.h in Headers */ = {isa = PBXBuildFile; fileRef = B7A5A6BC20AD7B59000FF11A /* NSObject+WorkWeChat.h */; };
@@ -38,8 +37,6 @@
 		B77007F920AD7A4E003E3154 /* WeWorkMacPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WeWorkMacPlugin.h; sourceTree = "<group>"; };
 		B77007FA20AD7A4E003E3154 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B77007FF20AD7A4E003E3154 /* WeWorkMacPluginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeWorkMacPluginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B770080420AD7A4E003E3154 /* WeWorkMacPluginTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeWorkMacPluginTests.m; sourceTree = "<group>"; };
-		B770080620AD7A4E003E3154 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7A5A6B820AD7AB8000FF11A /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		B7A5A6BC20AD7B59000FF11A /* NSObject+WorkWeChat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+WorkWeChat.h"; sourceTree = "<group>"; };
 		B7A5A6BD20AD7B59000FF11A /* NSObject+WorkWeChat.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+WorkWeChat.m"; sourceTree = "<group>"; };
@@ -75,7 +72,6 @@
 			isa = PBXGroup;
 			children = (
 				B77007F820AD7A4E003E3154 /* WeWorkMacPlugin */,
-				B770080320AD7A4E003E3154 /* WeWorkMacPluginTests */,
 				B77007F720AD7A4E003E3154 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -99,15 +95,6 @@
 				B7A5A6B720AD7A9A000FF11A /* Supporting Files */,
 			);
 			path = WeWorkMacPlugin;
-			sourceTree = "<group>";
-		};
-		B770080320AD7A4E003E3154 /* WeWorkMacPluginTests */ = {
-			isa = PBXGroup;
-			children = (
-				B770080420AD7A4E003E3154 /* WeWorkMacPluginTests.m */,
-				B770080620AD7A4E003E3154 /* Info.plist */,
-			);
-			path = WeWorkMacPluginTests;
 			sourceTree = "<group>";
 		};
 		B7A5A6B720AD7A9A000FF11A /* Supporting Files */ = {
@@ -184,7 +171,7 @@
 				B77007F220AD7A4E003E3154 /* Frameworks */,
 				B77007F320AD7A4E003E3154 /* Headers */,
 				B77007F420AD7A4E003E3154 /* Resources */,
-				B7A5A6C620AD7D99000FF11A /* ShellScript */,
+				B753148C2405294500376A93 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -268,18 +255,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B7A5A6C620AD7D99000FF11A /* ShellScript */ = {
+		B753148C2405294500376A93 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
+			);
+			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\napp_name=\"企业微信\"\nframework_name=\"WeWorkMacPlugin\"\napp_bundle_path=\"/Applications/${app_name}.app/Contents/MacOS\"\napp_executable_path=\"${app_bundle_path}/${app_name}\"\napp_executable_backup_path=\"${app_executable_path}_backup\"\nframework_path=\"${app_bundle_path}/${framework_name}.framework\"\n# 备份WeChat原始可执行文件\nif [ ! -f \"$app_executable_backup_path\" ]\nthen\ncp \"$app_executable_path\" \"$app_executable_backup_path\"\nfi\n\nrm -rf \"./Other/Products/Debug/${framework_name}.framework\"\ncp -r \"${BUILT_PRODUCTS_DIR}/${framework_name}.framework\" \"./Other/Products/Debug/${framework_name}.framework\"\ncp -r \"${BUILT_PRODUCTS_DIR}/${framework_name}.framework\" ${app_bundle_path}\n./Other/insert_dylib --all-yes \"${framework_path}/${framework_name}\" \"$app_executable_backup_path\" \"$app_executable_path\"\n";
+			shellScript = "#!/bin/bash\napp_name=\"企业微信\"\nframework_name=\"WeWorkMacPlugin\"\napp_bundle_path=\"/Applications/${app_name}.app/Contents/MacOS\"\napp_executable_path=\"${app_bundle_path}/${app_name}\"\napp_executable_backup_path=\"${app_executable_path}_backup\"\nframework_path=\"${app_bundle_path}/${framework_name}.framework\"\n# 备份WeChat原始可执行文件\nif [ ! -f \"$app_executable_backup_path\" ]\nthen\ncp \"$app_executable_path\" \"$app_executable_backup_path\"\nfi\n\nrm -rf \"./Other/Products/Debug/${framework_name}.framework\"\ncp -r \"${BUILT_PRODUCTS_DIR}/${framework_name}.framework\" \"./Other/Products/Debug/${framework_name}.framework\"\ncp -r \"${BUILT_PRODUCTS_DIR}/${framework_name}.framework\" ${app_bundle_path}\n./Other/insert_dylib --all-yes \"${framework_path}/${framework_name}\" \"$app_executable_backup_path\" \"$app_executable_path\"\n\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -301,7 +292,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7A5A6C520AD7C00000FF11A /* fishhook.c in Sources */,
-				B770080520AD7A4E003E3154 /* WeWorkMacPluginTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,14 +425,15 @@
 				DEVELOPMENT_TEAM = GDFHW66V92;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				DYLIB_INSTALL_NAME_BASE = ./;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "WeWorkMacPlugin/Supporting Files/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = ./Other/Products/Release;
+				LD_DYLIB_INSTALL_NAME = ./WeWorkMacPlugin.framework;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qiniu.WeWorkMacPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 			};
 			name = Debug;
 		};
@@ -456,14 +447,15 @@
 				DEVELOPMENT_TEAM = GDFHW66V92;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				DYLIB_INSTALL_NAME_BASE = ./;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "WeWorkMacPlugin/Supporting Files/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				INSTALL_PATH = ./Other/Products/Release;
+				LD_DYLIB_INSTALL_NAME = ./WeWorkMacPlugin.framework;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qiniu.WeWorkMacPlugin;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 			};
 			name = Release;
 		};

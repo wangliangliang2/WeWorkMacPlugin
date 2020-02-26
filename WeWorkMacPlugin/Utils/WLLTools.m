@@ -7,7 +7,8 @@
 //
 
 #import "WLLTools.h"
-
+#import "fishhook.h"
+static NSString * const kFilePath = @"%@/Library/Containers/com.tencent.WeWorkMac/Data";
 @implementation WLLTools
 
 /**
@@ -41,5 +42,52 @@ void wll_hookClassMethod(Class originalClass, SEL originalSelector, Class swizzl
         method_exchangeImplementations(originalMethod, swizzledMethod);
     }
 }
+
+
++ (NSString *)executeShellCommand:(NSString *)cmd {
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/bin/bash"];
+    [task setArguments:@[@"-c", cmd]];
+    NSPipe *errorPipe = [NSPipe pipe];
+    [task setStandardError:errorPipe];
+    NSFileHandle *file = [errorPipe fileHandleForReading];
+    [task launch];
+    NSData *data = [file readDataToEndOfFile];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+}
+
++ (void)switchSandboxPath{
+    rebind_symbols((struct rebinding[2]) {
+        { "NSSearchPathForDirectoriesInDomains", swizzled_NSSearchPathForDirectoriesInDomains, (void *)&original_NSSearchPathForDirectoriesInDomains },
+        { "NSHomeDirectory", swizzled_NSHomeDirectory, (void *)&original_NSHomeDirectory }
+    }, 2);
+}
+
+
+#pragma mark - 替换 NSSearchPathForDirectoriesInDomains & NSHomeDirectory
+static NSArray<NSString *> *(*original_NSSearchPathForDirectoriesInDomains)(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, BOOL expandTilde);
+
+NSArray<NSString *> *swizzled_NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, BOOL expandTilde) {
+    NSMutableArray<NSString *> *paths = [original_NSSearchPathForDirectoriesInDomains(directory, domainMask, expandTilde) mutableCopy];
+    NSString *sandBoxPath = [NSString stringWithFormat:kFilePath,original_NSHomeDirectory()];
+    
+    [paths enumerateObjectsUsingBlock:^(NSString *filePath, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSRange range = [filePath rangeOfString:original_NSHomeDirectory()];
+        if (range.length > 0) {
+            NSMutableString *newFilePath = [filePath mutableCopy];
+            [newFilePath replaceCharactersInRange:range withString:sandBoxPath];
+            paths[idx] = newFilePath;
+        }
+    }];
+    
+    return paths;
+}
+
+static NSString *(*original_NSHomeDirectory)(void);
+
+NSString *swizzled_NSHomeDirectory(void) {
+    return [NSString stringWithFormat:kFilePath,original_NSHomeDirectory()];
+}
+
 
 @end

@@ -16,5 +16,16 @@ FOUNDATION_EXPORT const unsigned char WeWorkMacPluginVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <WeWorkMacPlugin/PublicHeader.h>
 
+@interface WEWApplicationLifeCricleObserver : NSObject
+- (void)applicationDidFinishLaunching;
+@end
+
+@interface WEWMessage : NSObject
+@property(nonatomic) BOOL isRevoke;
+@end
+
+@interface WEWConversation : NSObject
+- (BOOL)isConversationSupportWaterMark;
+@end
 
 
