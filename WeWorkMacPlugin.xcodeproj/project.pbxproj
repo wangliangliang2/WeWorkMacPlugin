@@ -91,7 +91,6 @@
 				B7AA8E4D20AE64DB004B5799 /* Utils */,
 				B7A5A6C020AD7BE0000FF11A /* Vendor */,
 				B7A5A6BB20AD7B34000FF11A /* Category */,
-				B7A5A6BA20AD7B17000FF11A /* Common */,
 				B7A5A6B720AD7A9A000FF11A /* Supporting Files */,
 			);
 			path = WeWorkMacPlugin;
@@ -105,13 +104,6 @@
 				B77007FA20AD7A4E003E3154 /* Info.plist */,
 			);
 			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		B7A5A6BA20AD7B17000FF11A /* Common */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		B7A5A6BB20AD7B34000FF11A /* Category */ = {

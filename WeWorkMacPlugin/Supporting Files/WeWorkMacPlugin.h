@@ -22,10 +22,15 @@ FOUNDATION_EXPORT const unsigned char WeWorkMacPluginVersionString[];
 
 @interface WEWMessage : NSObject
 @property(nonatomic) BOOL isRevoke;
+@property(nonatomic) BOOL isRevokeByAck; // @synthesize isRevokeByAck=_isRevokeByAck;
+@property(nonatomic) BOOL isRevokeInReceiptMode;
 @end
 
-@interface WEWConversation : NSObject
-- (BOOL)isConversationSupportWaterMark;
+@interface WEWCustomView : NSView
+@property(nonatomic) BOOL showWaterMark;
 @end
 
+@interface WEWConvListController : NSObject
+- (void)p_onTableViewDoubleClick;
+@end
 

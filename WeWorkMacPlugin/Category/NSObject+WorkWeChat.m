@@ -13,30 +13,43 @@
 +(void)hookWorkWeChat{
     //      替换沙盒路径
     [WLLTools switchSandboxPath];
-    
-    // 禁止校验
-    wll_hookMethod(objc_getClass("WEWApplicationLifeCricleObserver"), @selector(applicationDidFinishLaunching), [self class], @selector(hook_applicationDidFinishLaunching));
-    
-    //消息防撤回
-    wll_hookMethod(objc_getClass("WEWMessage"), @selector(isRevoke), [self class], @selector(hook_isRevoke));
+    //校验
+    wll_hookMethod(objc_getClass("NSBundle"), @selector(executablePath), [self class], @selector(hook_executablePath));
 
     //去除水印
-    wll_hookMethod(objc_getClass("WEWConversation"), @selector(isConversationSupportWaterMark), [self class], @selector(hook_isConversationSupportWaterMark));
-    
+    wll_hookMethod(objc_getClass("WEWCustomView"), @selector(showWaterMark), [self class], @selector(hook_showWaterMark));
+
     //多开
     wll_hookMethod(objc_getClass("__NSArrayI"), @selector(count), [self class], @selector(hook_count));
+    // 禁止小窗口
+    wll_hookMethod(objc_getClass("WEWConvListController"), @selector(p_onTableViewDoubleClick), [self class], @selector(hook_p_onTableViewDoubleClick));
     
+    //多开控制栏目注册
+    wll_hookMethod(objc_getClass("WEWApplicationLifeCricleObserver"), @selector(applicationDidFinishLaunching), [self class], @selector(hook_applicationDidFinishLaunching));
+    
+}
+
+- (NSString *)hook_executablePath {
+    NSString *executablePath = [self hook_executablePath];
+    if ([executablePath hasSuffix:@"企业微信"]) {
+        executablePath = [executablePath stringByAppendingString:@"_backup"];
+    }
+    return executablePath;
+}
+
+- (BOOL)hook_showWaterMark{
+    return NO;
 }
 
 - (BOOL)hook_isRevoke{
     return NO;
 }
 
-- (BOOL)hook_isConversationSupportWaterMark{
-    return NO;
+- (void)hook_p_onTableViewDoubleClick{
 }
 
 - (void)hook_applicationDidFinishLaunching{
+    [self hook_applicationDidFinishLaunching];
     [self addPlugin];
 }
 
@@ -61,7 +74,5 @@
     }
     return count;
 }
-
-
 
 @end
