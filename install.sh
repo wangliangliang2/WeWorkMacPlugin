@@ -23,7 +23,7 @@ then
 cp "${app_executable_path}" "${app_executable_backup_path}"
 fi
 
-cp -r "${framework_path}/${framework_name}" ${app_bundle_path}
+cp -rf "${framework_path}/${framework_name}" ${app_bundle_path}
 rm -rf ${framework_path}/*
 
 ${other_dir_path}/insert_dylib --all-yes "${dylib_path}" "${app_executable_backup_path}" "${app_executable_path}"
